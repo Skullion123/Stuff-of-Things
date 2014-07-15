@@ -1,7 +1,9 @@
+
 class Player {
   
   PVector previousMousePosition = new PVector(0, 0);
   PVector currentMousePosition = new PVector();
+  
   
   public void Initialize()
   {

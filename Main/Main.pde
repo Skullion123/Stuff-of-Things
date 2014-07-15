@@ -1,3 +1,5 @@
+import peasy.*;
+
 
 public static float eyeX;
 public static float eyeY;
@@ -13,12 +15,15 @@ ArrayList<Block> blockList;
 
 Player player1;
 
+public static PeasyCam cam;
+
 void setup(){
  size(displayWidth/2, displayHeight/2, P3D);
  
  blockList = new ArrayList();
  
- 
+ cam = new PeasyCam(this, 100);
+ //cam.setYawRotationMode();
  
  player1 = new Player();
  player1.Initialize();
