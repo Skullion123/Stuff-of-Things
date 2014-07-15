@@ -16,7 +16,7 @@ class Block {
   public void Draw()
   {
     if (blockType == "grass")
-      fill(73, 250, 20)
+      fill(73, 250, 20);
     else if (blockType == "dirt")
       fill(142, 76, 14);
     else if (blockType == "stone")

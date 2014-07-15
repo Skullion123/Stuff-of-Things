@@ -22,10 +22,10 @@ void setup(){
  player1 = new Player();
  player1.Initialize();
  
- eyeX = 0.0;
- eyeY = 0.0;
- eyeZ = 0.0;
- centerX = 10.0;
+ eyeX = 55.0;
+ eyeY = 55.0;
+ eyeZ = 55.0;
+ centerX = 0.0;
  centerY = 0.0;
  centerZ = 0.0;
  upX = 0.0;
@@ -38,6 +38,8 @@ void setup(){
  println(mouseY);
  
  frameRate(24);
+ 
+ GenerateEverything();
 }
 
 void Update()
@@ -48,19 +50,45 @@ void Update()
 void draw()
 {
   Update();
+  clear();
+  background(58, 155, 98);
+
+  for (int i = 0; i < 500000; i++)
+  {
+    blockList[i].Draw();
+  }
+  
 }
 
 public void GenerateEverything()
 {
-  for (int x = 0; x <= 100; x++) //x
+  for (int x = 1; x <= 100; x++) //x
   {
-    for (int z = 0; z <= 100; z++) //z
+    for (int z = 1; z <= 100; z++) //z
     {
-      for (int y = 0 y <= 50; y++)  //y
+      for (int y = 1; y <= 50; y++)  //y
       {
         Block block = new Block();
         PVector blockPos = new PVector(10 * x, 10 * y, 10 * z);
-        
+        String type;
+        if (y == 1)
+        {
+          type = "bedrock";
+        }
+        else if (y == 49)
+        {
+          type = "dirt";
+        }
+        else if (y == 50)
+        {
+          type = "grass";
+        }
+        else
+        {
+          type = "stone";
+        }
+        block.Initialize(blockPos, type);
+        blockList.add(block);
       }
     }
   }
