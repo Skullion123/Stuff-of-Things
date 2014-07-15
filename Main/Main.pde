@@ -9,7 +9,7 @@ public static float upX;
 public static float upY;
 public static float upZ;
 
-ArrayList blockList;
+ArrayList<Block> blockList;
 
 Player player1;
 
@@ -19,12 +19,13 @@ void setup(){
  blockList = new ArrayList();
  
  
+ 
  player1 = new Player();
  player1.Initialize();
  
- eyeX = 55.0;
- eyeY = 55.0;
- eyeZ = 55.0;
+ eyeX = 0.0;
+ eyeY = 50.0;
+ eyeZ = 0.0;
  centerX = 0.0;
  centerY = 0.0;
  centerZ = 0.0;
@@ -53,20 +54,21 @@ void draw()
   clear();
   background(58, 155, 98);
 
-  for (int i = 0; i < 500000; i++)
+  for (int i = 0; i < blockList.size(); i++)
   {
-    blockList[i].Draw();
+    println(blockList.get(i));
+    blockList.get(i).Draw();
   }
   
 }
 
 public void GenerateEverything()
 {
-  for (int x = 1; x <= 100; x++) //x
+  for (int x = 1; x <= 1; x++) //x
   {
-    for (int z = 1; z <= 100; z++) //z
+    for (int z = 1; z <= 1; z++) //z
     {
-      for (int y = 1; y <= 50; y++)  //y
+      for (int y = 1; y <= 1; y++)  //y
       {
         Block block = new Block();
         PVector blockPos = new PVector(10 * x, 10 * y, 10 * z);
@@ -89,6 +91,7 @@ public void GenerateEverything()
         }
         block.Initialize(blockPos, type);
         blockList.add(block);
+
       }
     }
   }
