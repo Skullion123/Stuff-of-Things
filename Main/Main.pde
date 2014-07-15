@@ -40,7 +40,7 @@ void setup(){
  
  frameRate(24);
  
- GenerateEverything();
+ //GenerateEverything();
 }
 
 void Update()
@@ -51,9 +51,8 @@ void Update()
 void draw()
 {
   Update();
-  clear();
-  background(58, 155, 98);
-
+  //clear();
+  background(58, 155, 160);
   for (int i = 0; i < blockList.size(); i++)
   {
     println(blockList.get(i));

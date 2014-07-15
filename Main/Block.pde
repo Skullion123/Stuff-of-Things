@@ -22,7 +22,10 @@ class Block {
     else if (blockType == "stone")
       fill(160, 160, 160);
     else if (blockType == "bedrock")
-      fill(0, 0, 0);  
+      fill(0, 0, 0); 
+     
+     translate(Position.x, Position.y, Position.z);
+      
     box(10);
   }
 }

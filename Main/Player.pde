@@ -65,9 +65,9 @@ class Player {
   
   public void RotateCamera(int x, int y, int z)
   {
-    rotateX((int)radians(x));
-    rotateY((int)radians(y));
-    rotateZ((int)radians(z));
+    cam.rotateX((int)radians(x));
+    cam.rotateY((int)radians(y));
+    cam.rotateZ((int)radians(z));
   }
  
  
