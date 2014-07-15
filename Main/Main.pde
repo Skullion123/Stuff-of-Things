@@ -9,12 +9,15 @@ public static float upX;
 public static float upY;
 public static float upZ;
 
-
+ArrayList blockList;
 
 Player player1;
 
 void setup(){
  size(displayWidth/2, displayHeight/2, P3D);
+ 
+ blockList = new ArrayList();
+ 
  
  player1 = new Player();
  player1.Initialize();
@@ -45,6 +48,22 @@ void Update()
 void draw()
 {
   Update();
+}
+
+public void GenerateEverything()
+{
+  for (int x = 0; x <= 100; x++) //x
+  {
+    for (int z = 0; z <= 100; z++) //z
+    {
+      for (int y = 0 y <= 50; y++)  //y
+      {
+        Block block = new Block();
+        PVector blockPos = new PVector(10 * x, 10 * y, 10 * z);
+        
+      }
+    }
+  }
 }
 
 
