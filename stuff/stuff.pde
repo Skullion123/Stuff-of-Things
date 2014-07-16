@@ -45,9 +45,9 @@
     //How am make arrysss?!
  
   //Camera Variables
-    float x,y,z;
-    float tx,ty,tz;
-    float rotX,rotY;
+    float x, y, z;
+    float tx, ty, tz;
+    float rotX, rotY;
     float mX, mY;
     float frameCounter;
     float xComp, zComp;
@@ -58,7 +58,8 @@
     int moveZ;
     float vY;
     boolean canJump;
-    boolean moveUP,moveDOWN,moveLEFT,moveRIGHT;
+    boolean moveUP, moveDOWN, moveLEFT, moveRIGHT;
+    boolean xU, xD, yU, yD, zU, zD;
      
  
 //Constants
@@ -79,18 +80,22 @@
   int spotLightMode = 4;
   int cameraMode = 1;
   int moveMode = 2;
+  
+  ArrayList<PVector> blockloc;
  
-void setup(){
+void setup() {
   size(800,600,P3D);
   noStroke();
    
+   blockloc = new ArrayList();
+   
   //Camera Initialization
-  x = width/2;
-  y = height/2;
+  x = width / 2;
+  y = height / 2;
     y-= standHeight;
-  z = (height/2.0) / tan(PI*60.0 / 360.0);
-  tx = width/2;
-  ty = height/2;
+  z = (height / 2.0) / tan(PI * 60.0 / 360.0);
+  tx = width / 2;
+  ty = height / 2;
   tz = 0;
   rotX = 0;
   rotY = 0;
@@ -110,25 +115,25 @@ void setup(){
 }
  
  
-void draw(){
-   
+void draw() {
+  
   //update frame
   background(58, 155, 160);
    
   if(spotLightMode == 0)
     lights();
   else if(spotLightMode == 1)
-    spotLight(255,255,255,x,y-standHeight,z,tx,ty,tz,PI,1);
+    spotLight(255, 255, 255, x, y - standHeight, z, tx, ty, tz, PI, 1);
   else if(spotLightMode == 2)
-    spotLight(255,255,255,x,y-standHeight-200,z,x+100,y+100,z,frameCounter/10,1);
+    spotLight(255, 255, 255, x, y - standHeight - 200, z, x + 100, y + 100, z, frameCounter / 10, 1);
   else if(spotLightMode == 3)
-    spotLight(255,255,255,width/2,height/2-1000,0,width/2,height/2,0,PI,1);
+    spotLight(255, 255, 255, width / 2, height / 2 - 1000, 0, width / 2, height / 2, 0, PI, 1);
   else if(spotLightMode == 4)
-    pointLight(255,255,255,x,y,z);
+    pointLight(255, 255, 255, x, y, z);
      
    
   //Draw Boxes
-  for(int y1 = 0; y1 < floor(totalBoxes / 2); y1++){
+  for(int y1 = 0; y1 < floor(totalBoxes / 2); y1 ++){
       if (y1 == 0)
       {
         blocktype = "grass";
@@ -145,10 +150,10 @@ void draw(){
       {
         blocktype = "stone";
       }
-    for(int x1 = 0; x1 < totalBoxes; x1++){
-      for(int z1 = 0; z1 < totalBoxes; z1++){
+    for(int x1 = 0; x1 < totalBoxes; x1 ++) {
+      for(int z1 = 0; z1 < totalBoxes; z1 ++) {
           pushMatrix();
-            translate(width/2+x1*100-(totalBoxes*100/2),height/2+y1*100-(totalBoxes*100/2),z1*100-(totalBoxes*100/2));
+            translate(width / 2 + x1 * 100 - (totalBoxes * 100 / 2) - 5, height / 2 + y1 * 100 - (totalBoxes * 100 / 2), z1 * 100 - (totalBoxes * 100 / 2));
   //          translate(width/2,height/2);
   //          fill((x1/totalBoxes)*255,255,(z1/totalBoxes)*255,random(250,255));
             if (blocktype == "grass")
@@ -160,33 +165,71 @@ void draw(){
             else if (blocktype == "bedrock")
               fill(30, 30, 30); 
             box(90); 
+            
+            //Adding the Block Locations to blockloc for physics
+            PVector block = new PVector ((width / 2 + x1 * 100 - (totalBoxes * 100 / 2) - 5), (height / 2 + y1 * 100 - (totalBoxes * 100 / 2)), (z1 * 100 - (totalBoxes * 100 / 2) - 5));
+            blockloc.add(block);
           popMatrix();
       }
     }
   }
-   
+  
+  //Checking for Solid Blocks
+    for(int zDh = 0; zDh < blockloc.size(); zDh ++) {
+      if((z - 1) > blockloc.get(zDh).z && (z - 1) < (blockloc.get(zDh).z + 100)) {
+        zD = false;
+      }
+      else {
+        zD = true;
+      }
+    }
+    for(int zUh = 0; zUh < blockloc.size(); zUh ++) {
+      if((z + 1) > blockloc.get(zUh).z && (z + 1) < (blockloc.get(zUh).z + 100)) {
+        zU = false;
+      }
+      else {
+        zU = true;
+      }
+    }
+    for(int xDh = 0; xDh < blockloc.size(); xDh ++) {
+      if((x - 1) > blockloc.get(xDh).x && (x - 1) < (blockloc.get(xDh).x + 100)) {
+        xD = false;
+      }
+      else {
+        xD = true;
+      }
+    }
+    for(int xUh = 0; xUh < blockloc.size(); xUh ++) {
+      if((x + 1) > blockloc.get(xUh).x && (x + 1) < (blockloc.get(xUh).x + 100)) {
+        xU = false;
+      }
+      else {
+        xU = true;
+      }
+    }
+  
   cameraUpdate();
   locationUpdate();
   jumpManager(10);
    
   //Camera Mode 1 - Original
   if(cameraMode == 1)
-    camera(x,y,z,tx,ty,tz,0,1,0);
+    camera(x, y, z, tx, ty, tz, 0, 1, 0);
    
   //Camera Mode 2 - Matrix'd
   if(cameraMode == 2){
     beginCamera();
       camera();
-      translate(x,y,z);
-      translate(0,2*-standHeight,0);
+      translate(x, y, z);
+      translate(0, (2 * (-1 * standHeight)), 0);
  
-      rotateX(rotY/100.0); //This seems to work o.o
-      rotateY(-rotX/100.0);
+      rotateX(rotY / 100.0); //This seems to work o.o
+      rotateY(rotX / -100.0);
       //rotateX(rotX/100.0);
     endCamera();
   }
    
-  frameCounter++;
+  frameCounter ++;
    
    
    
@@ -201,32 +244,32 @@ public void cameraUpdate(){
     else if (pmouseX < mouseX)
       tx -= dragMotionConstant;
     if(pmouseY > mouseY)
-      ty -= dragMotionConstant/1.5;
+      ty -= dragMotionConstant / 1.5;
     else if (pmouseY < mouseY)
-      ty += dragMotionConstant/1.5;
+      ty += dragMotionConstant / 1.5;
   }
    
   //Push-motion
   else if (lookMode == 2){
-    if (mouseX > (width/2+pushMotionConstant))
+    if (mouseX > (width / 2 + pushMotionConstant))
       tx += dragMotionConstant;
-    else if (mouseX < (width/2-pushMotionConstant))
+    else if (mouseX < (width / 2 - pushMotionConstant))
       tx -= dragMotionConstant;
-    if (mouseY > (height/2+pushMotionConstant))
+    if (mouseY > (height / 2 + pushMotionConstant))
       ty += dragMotionConstant;
-    else if (mouseY < (height/2-pushMotionConstant))
+    else if (mouseY < (height / 2 - pushMotionConstant))
       ty -= dragMotionConstant;
   }
    
   //Push-motion V2 (Hopefully improved!)
   else if (lookMode == 3){
-    int diffX = mouseX - width/2;
-    int diffY = mouseY - width/2;
+    int diffX = mouseX - width / 2;
+    int diffY = mouseY - width / 2;
      
     if (abs(diffX) > pushMotionConstant)
-      tx += diffX/25;
+      tx += (diffX / 25);
     if (abs(diffY) > pushMotionConstant)
-      ty += diffY/25;
+      ty += (diffY / 25);
   }
    
   //Push Motion V3 (For Camera-Mode 2)
@@ -464,21 +507,21 @@ public void locationUpdate(){
   // Scroll Down!
 }
  
-public void jumpManager(int magnitude){
+public void jumpManager(int magnitude) {
    
-  if(keyPressed && key == ' ' && canJump){
+  if(keyPressed && key == ' ' && canJump) {
     vY -= magnitude;
     if(vY < -20)
       canJump = false;
   }
   else if (y < ground+standHeight)
     vY ++;
-  else if (y >= ground+standHeight){
+  else if (y >= ground+standHeight) {
     vY = 0;
     y = ground + standHeight;
   }
    
-  if((!canJump) && (!keyPressed)){
+  if((!canJump) && (!keyPressed)) {
     println("Jump Reset!");
     canJump = true;
   }
@@ -486,25 +529,33 @@ public void jumpManager(int magnitude){
   y += vY;
 }
  
-public void keyPressed(){
+public void keyPressed() {
   if(keyCode == UP || key == 'w'){
-    moveZ = -10;
-    moveUP = true;
+    if(zD){
+      moveZ = -10;
+      moveUP = true;
+    }
   }
    
-  else if(keyCode == DOWN || key == 's'){
-    moveZ = 10;
-    moveDOWN = true;
+  else if(keyCode == DOWN || key == 's') {
+    if(zU){
+      moveZ = 10;
+      moveDOWN = true;
+    }
   }
    
   else if(keyCode == LEFT || key == 'a'){
-    moveX = -10;
-    moveLEFT = true;
+    if(xU){
+      moveX = -10;
+      moveLEFT = true;
+    }
   }
    
   else if(keyCode == RIGHT || key == 'd'){
-    moveX = 10;
-    moveRIGHT = true;
+    if(xD){
+      moveX = 10;
+      moveRIGHT = true;
+    }
   }
 }
  
