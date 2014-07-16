@@ -27,7 +27,7 @@ class Player {
     println(currentMousePosition.x);
     if (currentMousePosition.x > previousMousePosition.x /*&& currentMousePosition.x - previousMousePosition.x >= 3*/)
     {
-      RotateCamera(0, 3, 0);
+      RotateCamera(0, 100, 0);
       println("Rotate right 3 degrees");
     }
     else if (currentMousePosition.x < previousMousePosition.x /*&& previousMousePosition.x - currentMousePosition.x >= 3*/)
@@ -67,9 +67,11 @@ class Player {
   
   public void RotateCamera(int x, int y, int z)
   {
-    cam.rotateX((int)radians(x));
-    cam.rotateY((int)radians(y));
-    cam.rotateZ((int)radians(z));
+    beginCamera();
+    rotateX((int)radians(x));
+    rotateY((int)radians(y));
+    rotateZ((int)radians(z));
+    endCamera();
   }
  
  

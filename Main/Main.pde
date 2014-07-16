@@ -1,6 +1,3 @@
-import peasy.*;
-
-
 public static float eyeX;
 public static float eyeY;
 public static float eyeZ;
@@ -15,27 +12,23 @@ ArrayList<Block> blockList;
 
 Player player1;
 
-public static PeasyCam cam;
-
 void setup(){
  size(displayWidth/2, displayHeight/2, P3D);
  
  blockList = new ArrayList();
  
- cam = new PeasyCam(this, 100);
- //cam.setYawRotationMode();
  
  player1 = new Player();
  player1.Initialize();
  
- eyeX = 0.0;
- eyeY = 50.0;
- eyeZ = 0.0;
- centerX = 0.0;
- centerY = 0.0;
+ eyeX = width/2.0;
+ eyeY = height;
+ eyeZ =  (height/2.0) / tan(PI*30.0 / 180.0);
+ centerX = width/2.0;
+ centerY = height/2.0;
  centerZ = 0.0;
  upX = 0.0;
- upY = 0.0;
+ upY = 1.0;
  upZ = 0.0;
  
  camera(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ);
@@ -45,7 +38,7 @@ void setup(){
  
  frameRate(24);
  
- //GenerateEverything();
+ GenerateEverything();
 }
 
 void Update()
