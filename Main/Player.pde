@@ -27,29 +27,42 @@ class Player {
     println(currentMousePosition.x);
     if (currentMousePosition.x > previousMousePosition.x /*&& currentMousePosition.x - previousMousePosition.x >= 3*/)
     {
+      //Main.centerX += 5;
+      //camera(Main.eyeX, Main.eyeY, Main.eyeZ, Main.centerX, Main.centerY, Main.centerZ, Main.upX, Main.upY, Main.upZ);
       RotateCamera(0, 100, 0);
       println("Rotate right 3 degrees");
     }
     else if (currentMousePosition.x < previousMousePosition.x /*&& previousMousePosition.x - currentMousePosition.x >= 3*/)
     {
-      RotateCamera(0, -3, 0);
+      //Main.centerX -= 5;
+      //camera(Main.eyeX, Main.eyeY, Main.eyeZ, Main.centerX, Main.centerY, Main.centerZ, Main.upX, Main.upY, Main.upZ);
+      RotateCamera(0, -100, 0);
       println("Rotate left 3 degrees");
     }
     
     if (currentMousePosition.y > previousMousePosition.y /*&& currentMousePosition.y - previousMousePosition.y >= 3*/)
     {
-      RotateCamera(-3, 0, 0);
+      //Main.centerZ -= -5;
+      //camera(Main.eyeX, Main.eyeY, Main.eyeZ, Main.centerX, Main.centerY, Main.centerZ, Main.upX, Main.upY, Main.upZ);
+      RotateCamera(-100, 0, 0);
       println("Rotate down 3 degrees");
     }
     else if (currentMousePosition.y < previousMousePosition.y /*&& previousMousePosition.y - currentMousePosition.y >= 3*/)
     {
-      RotateCamera(3, 0, 0);
+      //Main.centerZ += -5;
+      //camera(Main.eyeX, Main.eyeY, Main.eyeZ, Main.centerX, Main.centerY, Main.centerZ, Main.upX, Main.upY, Main.upZ);
+      RotateCamera(100, 0, 0);
       println("Rotate up 3 degrees");
     }
     previousMousePosition.x = mouseX;
     previousMousePosition.y = mouseY;
  // }
   
+  
+  if (keyPressed('w'))
+  {
+    
+  }
     
     
     
@@ -62,7 +75,7 @@ class Player {
     Main.eyeX += x;
     Main.eyeY += y;
     Main.eyeZ += z;
-    camera(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ);
+    camera(Main.eyeX, Main.eyeY, Main.eyeZ, Main.centerX, Main.centerY, Main.centerZ, Main.upX, Main.upY, Main.upZ);
   }
   
   public void RotateCamera(int x, int y, int z)
@@ -74,6 +87,18 @@ class Player {
     endCamera();
   }
  
+ 
+  boolean keyPressed(char character)
+  {
+    if (key == character)
+    {
+      return true;
+    }
+    else
+    {
+      return false;
+    }
+  }
  
  
  /*

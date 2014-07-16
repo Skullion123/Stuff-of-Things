@@ -61,11 +61,11 @@ void draw()
 
 public void GenerateEverything()
 {
-  for (int x = 1; x <= 1; x++) //x
+  for (int x = 1; x <= 4; x++) //x
   {
-    for (int z = 1; z <= 1; z++) //z
+    for (int z = 1; z <= 4; z++) //z
     {
-      for (int y = 1; y <= 1; y++)  //y
+      for (int y = 1; y <= 4; y++)  //y
       {
         Block block = new Block();
         PVector blockPos = new PVector(10 * x, 10 * y, 10 * z);
