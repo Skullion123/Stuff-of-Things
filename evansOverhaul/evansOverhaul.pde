@@ -48,6 +48,11 @@
    
    boolean creative = false; 
    
+   
+   float gravity = 0.00;
+   
+   boolean standing = false;
+   
   //Camera Variables
     float x, y, z;
     float tx, ty, tz;
@@ -60,7 +65,7 @@
 //Constants
     int ground = 0;
     int totalBoxes = 20;
-    int standHeight = 100;
+    int standHeight = 115;
     int dragMotionConstant = 10;
     int pushMotionConstant = 100;
     int movementSpeed = 50;    //Bigger number = slower
@@ -133,7 +138,9 @@ void setup()
     
     drawArray();
     
-    incrementPlayerY(-570);
+    incrementPlayerY(-200);
+    incrementPlayerX(-500);
+    incrementPlayerZ(-600);
 }
  
  
@@ -157,6 +164,8 @@ void draw()
    
     updatePlayerPosition();
     
+    applyGravity();
+    
     cameraUpdate();
    
     //Camera Mode 1 - Original
@@ -178,15 +187,18 @@ void draw()
     frameCounter++;
 }
 
-boolean checkPosition()
+boolean checkPosition(float xPos, float yPos, float zPos)
 {
-  return true;
+  if (chunkArray[floor(xPos / 32)][floor(yPos / 32)][floor(zPos / 32)] == blockTypeAir)
+    return true;
+  else
+    return false;
 }
 
 //array stuff
 void initArray()
 {
-    chunkArray = new int[16][16][16];
+    chunkArray = new int[32][32][32];
 }
 
 void clearArray()
@@ -205,22 +217,38 @@ void clearArray()
 
 void populateArray()
 {
-    setArrayLayer(0, blockTypeGrass);
-    setArrayLayer(1, blockTypeDirt);
-    setArrayLayer(2, blockTypeDirt);
-    setArrayLayer(3, blockTypeDirt);
-    setArrayLayer(4, blockTypeStone);
-    setArrayLayer(5, blockTypeStone);
-    setArrayLayer(6, blockTypeStone);
-    setArrayLayer(7, blockTypeStone);
-    setArrayLayer(8, blockTypeStone);
-    setArrayLayer(9, blockTypeStone);
-    setArrayLayer(10, blockTypeStone);
-    setArrayLayer(11, blockTypeStone);
-    setArrayLayer(12, blockTypeStone);
-    setArrayLayer(13, blockTypeStone);
-    setArrayLayer(14, blockTypeObsidion);
-    setArrayLayer(15, blockTypeBedrock);
+    setArrayLayer(0, blockTypeAir);
+    setArrayLayer(1, blockTypeAir);
+    setArrayLayer(2, blockTypeAir);
+    setArrayLayer(3, blockTypeAir);
+    setArrayLayer(4, blockTypeAir);
+    setArrayLayer(5, blockTypeAir);
+    setArrayLayer(6, blockTypeAir);
+    setArrayLayer(7, blockTypeAir);
+    setArrayLayer(8, blockTypeAir);
+    setArrayLayer(9, blockTypeAir);
+    setArrayLayer(10, blockTypeAir);
+    setArrayLayer(11, blockTypeAir);
+    setArrayLayer(12, blockTypeAir);
+    setArrayLayer(13, blockTypeAir);
+    setArrayLayer(14, blockTypeAir);
+    setArrayLayer(15, blockTypeAir);
+    setArrayLayer(16, blockTypeGrass);
+    setArrayLayer(17, blockTypeDirt);
+    setArrayLayer(18, blockTypeDirt);
+    setArrayLayer(19, blockTypeDirt);
+    setArrayLayer(20, blockTypeStone);
+    setArrayLayer(21, blockTypeStone);
+    setArrayLayer(22, blockTypeStone);
+    setArrayLayer(23, blockTypeStone);
+    setArrayLayer(24, blockTypeStone);
+    setArrayLayer(25, blockTypeStone);
+    setArrayLayer(26, blockTypeStone);
+    setArrayLayer(27, blockTypeStone);
+    setArrayLayer(28, blockTypeStone);
+    setArrayLayer(29, blockTypeStone);
+    setArrayLayer(30, blockTypeObsidion);
+    setArrayLayer(31, blockTypeBedrock);
 }
 
 void setArrayLayer(int layerY, int blockType)
@@ -299,13 +327,33 @@ boolean checkArrayEmpty(int arrayX, int arrayY, int arrayZ)
     }
     else
     {
-        blockSolid = true;
+      blockSolid = true;
     }
     
     return (!blockSolid);
 }
 
 //player position functions
+void applyGravity()
+{
+  if (!creative) {  
+    if (checkPosition(getPlayerX(), getPlayerY() + standHeight + 10, getPlayerZ()))
+    {
+      standing = false;
+      gravity += 0.2;
+    }
+    else 
+    {   
+      if (standing == false)
+      {
+        standing = true;
+        gravity = 0;
+      }
+    }
+    incrementPlayerY(gravity);
+  }
+}
+
 
 void updatePlayerPosition()
 {
@@ -313,6 +361,9 @@ void updatePlayerPosition()
     boolean realSPressed = sPressed;
     boolean realDPressed = dPressed;
     boolean realAPressed = aPressed;
+    
+    
+    
     
     if (shiftPressed)
     {
@@ -322,8 +373,16 @@ void updatePlayerPosition()
     
     if (spacePressed)
     {
-      incrementPlayerY(-5);
-      ty -= 5;
+      if (creative)
+      {
+        incrementPlayerY(-5);
+        ty -= 5;
+        gravity = 0;
+      }
+      else
+      {
+        gravity -= 10;
+      }
     }    
     
     if ((wPressed) && (sPressed))
@@ -338,35 +397,35 @@ void updatePlayerPosition()
         aPressed = false;
     }
     
-    if ((wPressed) && (dPressed))
+    if ((wPressed) && (dPressed) && checkPosition(getPlayerX() + getSpeedX(45), getPlayerY() + standHeight, getPlayerZ() + getSpeedZ(45)))
     {
         movePlayer(directionForwardRight);
     }
-    else if ((wPressed) && (aPressed))
+    else if ((wPressed) && (aPressed) && checkPosition(getPlayerX() + getSpeedX(315), getPlayerY() + standHeight, getPlayerZ() + getSpeedZ(315)))
     {
         movePlayer(directionForwardLeft);
     }
-    else if ((sPressed) && (dPressed))
+    else if ((sPressed) && (dPressed) && checkPosition(getPlayerX() + getSpeedX(135), getPlayerY() + standHeight, getPlayerZ() + getSpeedZ(135)))
     {
         movePlayer(directionBackwardRight);
     }
-    else if ((sPressed) && (aPressed))
+    else if ((sPressed) && (aPressed) && checkPosition(getPlayerX() + getSpeedX(255), getPlayerY() + standHeight, getPlayerZ() + getSpeedZ(255)))
     {
         movePlayer(directionBackwardLeft);
     }
-    else if (wPressed)
+    else if (wPressed && checkPosition(getPlayerX() + getSpeedX(0), getPlayerY() + standHeight, getPlayerZ() + getSpeedZ(0)))
     {
         movePlayer(directionForward);
     }
-    else if (sPressed)
+    else if (sPressed && checkPosition(getPlayerX() + getSpeedX(180), getPlayerY() + standHeight, getPlayerZ() + getSpeedZ(180)))
     {
         movePlayer(directionBackward);
     }
-    else if (dPressed)
+    else if (dPressed && checkPosition(getPlayerX() + getSpeedX(90), getPlayerY() + standHeight, getPlayerZ() + getSpeedZ(90)))
     {
         movePlayer(directionRight);
     }
-    else if (aPressed)
+    else if (aPressed && checkPosition(getPlayerX() + getSpeedX(270), getPlayerY() + standHeight, getPlayerZ() + getSpeedZ(270)))
     {
         movePlayer(directionLeft);
     }
@@ -421,6 +480,7 @@ void setPlayerZ(float setZ)
 void incrementPlayerX(float setX)
 {
     setPlayerX(getPlayerX() + setX);
+    tx += setX;
 }
 
 void incrementPlayerY(float setY)
@@ -463,6 +523,7 @@ public void keyPressed()
     
     if (keyCode == SHIFT && creative)
     {
+        key = '\0';
         shiftPressed = true;
     }
     
