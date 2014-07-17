@@ -217,7 +217,7 @@ void clearArray()
 
 void populateArray()
 {
-    setArrayLayer(0, blockTypeAir);
+    setArrayLayer(0, blockTypeBedrock);
     setArrayLayer(1, blockTypeAir);
     setArrayLayer(2, blockTypeAir);
     setArrayLayer(3, blockTypeAir);
@@ -340,7 +340,7 @@ void applyGravity()
     if (checkPosition(getPlayerX(), getPlayerY() + standHeight + 10, getPlayerZ()))
     {
       standing = false;
-      gravity += 0.2;
+      gravity += 0.5;
     }
     else 
     {   
@@ -351,6 +351,7 @@ void applyGravity()
       }
     }
     incrementPlayerY(gravity);
+    
   }
 }
 
@@ -372,7 +373,7 @@ void updatePlayerPosition()
     }
     
     if (spacePressed)
-    {
+    { 
       if (creative)
       {
         incrementPlayerY(-5);
@@ -381,8 +382,9 @@ void updatePlayerPosition()
       }
       else
       {
-        gravity -= 10;
+        gravity -= 4;
       }
+      println(gravity);
     }    
     
     if ((wPressed) && (sPressed))
@@ -527,7 +529,7 @@ public void keyPressed()
         shiftPressed = true;
     }
     
-    if (key == spaceKey && creative)
+    if (key == spaceKey)
     {
         spacePressed = true;
     }    
