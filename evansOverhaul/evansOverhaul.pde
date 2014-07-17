@@ -43,6 +43,10 @@
  
   //Environment Variables
     //How am make arrysss?!
+    
+    
+    
+  
  
   //Camera Variables
     float x,y,z;
@@ -108,7 +112,7 @@ boolean aPressed = false;
 
 void setup()
 {
-    size(800,600,P3D);
+    size(1440, 1080,P3D);
     noStroke();
     initCamera();
     
@@ -119,6 +123,11 @@ void setup()
     populateArray();
     
     drawArray();
+    
+    incrementPlayerY(-570);
+    
+
+    
 }
  
  
@@ -312,8 +321,8 @@ void updatePlayerPosition()
 
 void movePlayer(float xSpeed, float zSpeed)
 {
-    incrementPlayerX(xSpeed);
-    incrementPlayerZ(zSpeed);
+    incrementPlayerX(xSpeed * 2);
+    incrementPlayerZ(zSpeed * 2);
 }
 
 void movePlayer(float direction)
