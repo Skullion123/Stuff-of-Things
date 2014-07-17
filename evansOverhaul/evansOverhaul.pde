@@ -84,7 +84,7 @@
 int blockTypeAir = 0;
 int blockTypeDirt = 1;
 int blockTypeStone = 2;
-int blockTypeObsidion = 3;
+int blockTypeobsidian = 3;
 int blockTypeGrass = 4;
 int blockTypeBedrock = 5;
 int blockTypeWood = 6;
@@ -167,6 +167,13 @@ void draw()
     applyGravity();
     
     cameraUpdate();
+    
+    fill(255, 255, 255);
+    translate(getPlayerX(), getPlayerY() , getPlayerZ());
+    box( 100 , 100, 60);
+    translate(-getPlayerX(), -getPlayerY() , -getPlayerZ());
+
+    
    
     //Camera Mode 1 - Original
     if(cameraMode == 1)
@@ -247,7 +254,7 @@ void populateArray()
     setArrayLayer(27, blockTypeStone);
     setArrayLayer(28, blockTypeStone);
     setArrayLayer(29, blockTypeStone);
-    setArrayLayer(30, blockTypeObsidion);
+    setArrayLayer(30, blockTypeobsidian);
     setArrayLayer(31, blockTypeBedrock);
 }
 
@@ -298,7 +305,7 @@ void drawArray()
                     else if (chunkArray[arrayX][arrayY][arrayZ] == blockTypeStone) {
                         fill(125, 125, 125);
                     }
-                    else if (chunkArray[arrayX][arrayY][arrayZ] == blockTypeObsidion) {
+                    else if (chunkArray[arrayX][arrayY][arrayZ] == blockTypeobsidian) {
                         fill(13, 0, 25);
                     }
                     else if (chunkArray[arrayX][arrayY][arrayZ] == blockTypeBedrock) {
