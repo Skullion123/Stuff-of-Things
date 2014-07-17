@@ -93,12 +93,12 @@ char aKey = 'a';
 //directions
 int directionForward = 0;
 int directionBackward = 180;
-int directionRight = 270;
-int directionLeft = 90;
-int directionForwardRight = 315;
-int directionForwardLeft = 45;
-int directionBackwardRight = 225;
-int directionBackwardLeft = 135;
+int directionRight = 90;
+int directionLeft = 270;
+int directionForwardRight = 45;
+int directionForwardLeft = 315;
+int directionBackwardRight = 135;
+int directionBackwardLeft = 225;
 
 //key press variables
 boolean wPressed = false;
@@ -234,7 +234,7 @@ void drawArray()
     }
 }
 
-checkArrayEmpty(int arrayX, int arrayY, int arrayZ)
+boolean checkArrayEmpty(int arrayX, int arrayY, int arrayZ)
 {
     boolean blockSolid = false;
     
@@ -244,7 +244,7 @@ checkArrayEmpty(int arrayX, int arrayY, int arrayZ)
     }
     else
     {
-        blockSolid = tr;
+        blockSolid = true;
     }
     
     return (!blockSolid);
