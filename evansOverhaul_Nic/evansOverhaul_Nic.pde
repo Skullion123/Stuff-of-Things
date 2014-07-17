@@ -46,12 +46,15 @@
    boolean isNotBlockLeft;
    boolean isNotBlockRight;
    
-   boolean creative = false; 
-   
+   boolean creative = false;
+    
+    
+  
+ 
   //Camera Variables
-    float x, y, z;
-    float tx, ty, tz;
-    float rotX, rotY; 
+    float x,y,z;
+    float tx,ty,tz;
+    float rotX,rotY;
     float mX, mY;
     float frameCounter;
     float xComp, zComp;
@@ -79,11 +82,9 @@
 int blockTypeAir = 0;
 int blockTypeDirt = 1;
 int blockTypeStone = 2;
-int blockTypeObsidion = 3;
 int blockTypeGrass = 4;
 int blockTypeBedrock = 5;
-int blockTypeWood = 6;
-int blockTypeLeaves = 7;
+int blovkTypeLeaves = 6;
 
 //array
 int[][][] chunkArray;
@@ -121,7 +122,7 @@ boolean spacePressed = false;
 
 void setup()
 {
-    size(1440,1080,P3D);
+    size(1440, 1080,P3D);
     noStroke();
     initCamera();
     
@@ -134,24 +135,27 @@ void setup()
     drawArray();
     
     incrementPlayerY(-570);
+    
+
+    
 }
  
  
 void draw()
 {
     //update frame
-    background(135, 206, 250);
+    background(0);
    
     if(spotLightMode == 0)
       lights();
     else if(spotLightMode == 1)
-      spotLight(255, 255, 255, x, y - standHeight, z, tx, ty, tz, PI, 1);
+      spotLight(255,255,255,x,y-standHeight,z,tx,ty,tz,PI,1);
     else if(spotLightMode == 2)
-      spotLight(255, 255, 255, x, y - standHeight - 200, z, x + 100, y + 100, z, frameCounter / 10, 1);
+      spotLight(255,255,255,x,y-standHeight-200,z,x+100,y+100,z,frameCounter/10,1);
     else if(spotLightMode == 3)
-      spotLight(255, 255, 255, width / 2, height / 2 - 1000, 0, width / 2, height / 2, 0, PI, 1);
+      spotLight(255,255,255,width/2,height/2-1000,0,width/2,height/2,0,PI,1);
     else if(spotLightMode == 4)
-      pointLight(255, 255, 255, x, y, z);
+      pointLight(255,255,255,x,y,z);
     
     drawArray();
    
@@ -163,17 +167,17 @@ void draw()
    
     //Camera Mode 1 - Original
     if(cameraMode == 1)
-    camera(x, y, z, tx, ty, tz, 0, 1, 0);
+    camera(x,y,z,tx,ty,tz,0,1,0);
    
     //Camera Mode 2 - Matrix'd
     if(cameraMode == 2){
     beginCamera();
     camera();
     translate(x,y,z);
-    translate(0, 2 * -standHeight, 0);
+    translate(0,2*-standHeight,0);
  
-    rotateX(rotY / 100.0); //This seems to work o.o
-    rotateY(-rotX / 100.0);
+    rotateX(rotY/100.0); //This seems to work o.o
+    rotateY(-rotX/100.0);
     //rotateX(rotX/100.0);
     endCamera();
     }
@@ -183,7 +187,7 @@ void draw()
 //array stuff
 void initArray()
 {
-    chunkArray = new int[16][16][16];
+    chunkArray = new int[20][20][20];
 }
 
 void clearArray()
@@ -202,22 +206,8 @@ void clearArray()
 
 void populateArray()
 {
-    setArrayLayer(0, blockTypeGrass);
+    setArrayLayer(0, blockTypeStone);
     setArrayLayer(1, blockTypeDirt);
-    setArrayLayer(2, blockTypeDirt);
-    setArrayLayer(3, blockTypeDirt);
-    setArrayLayer(4, blockTypeStone);
-    setArrayLayer(5, blockTypeStone);
-    setArrayLayer(6, blockTypeStone);
-    setArrayLayer(7, blockTypeStone);
-    setArrayLayer(8, blockTypeStone);
-    setArrayLayer(9, blockTypeStone);
-    setArrayLayer(10, blockTypeStone);
-    setArrayLayer(11, blockTypeStone);
-    setArrayLayer(12, blockTypeStone);
-    setArrayLayer(13, blockTypeStone);
-    setArrayLayer(14, blockTypeObsidion);
-    setArrayLayer(15, blockTypeBedrock);
 }
 
 void setArrayLayer(int layerY, int blockType)
@@ -258,27 +248,6 @@ void drawArray()
             {
                 if (chunkArray[arrayX][arrayY][arrayZ] != blockTypeAir)
                 {
-                    if (chunkArray[arrayX][arrayY][arrayZ] == blockTypeDirt) {
-                        fill(51, 25, 0);
-                    }
-                    else if (chunkArray[arrayX][arrayY][arrayZ] == blockTypeGrass) {
-                        fill(10, 250, 15);
-                    }
-                    else if (chunkArray[arrayX][arrayY][arrayZ] == blockTypeStone) {
-                        fill(125, 125, 125);
-                    }
-                    else if (chunkArray[arrayX][arrayY][arrayZ] == blockTypeObsidion) {
-                        fill(13, 0, 25);
-                    }
-                    else if (chunkArray[arrayX][arrayY][arrayZ] == blockTypeBedrock) {
-                        fill(10, 10, 10);
-                    }
-                    else if (chunkArray[arrayX][arrayY][arrayZ] == blockTypeWood) {
-                        fill(102, 51, 0);
-                    }
-                    else if (chunkArray[arrayX][arrayY][arrayZ] == blockTypeLeaves) {
-                        fill(51, 102, 0);
-                    }
                     drawCube(arrayX * blockSize, arrayY * blockSize, arrayZ * blockSize, blockSolidSize);
                 }
             }
@@ -319,7 +288,7 @@ void updatePlayerPosition()
     if (spacePressed)
     {
       incrementPlayerY(-5);
-    }    
+    }
     
     if ((wPressed) && (sPressed))
     {
@@ -357,11 +326,11 @@ void updatePlayerPosition()
     {
         movePlayer(directionBackward);
     }
-    else if (dPressed)
+    else if (dPressed && isNotBlockLeft)
     {
         movePlayer(directionRight);
     }
-    else if (aPressed)
+    else if (aPressed && isNotBlockRight)
     {
         movePlayer(directionLeft);
     }
@@ -374,8 +343,8 @@ void updatePlayerPosition()
 
 void movePlayer(float xSpeed, float zSpeed)
 {
-    incrementPlayerX(xSpeed * 3);
-    incrementPlayerZ(zSpeed * 3);
+    incrementPlayerX(xSpeed * 2);
+    incrementPlayerZ(zSpeed * 2);
 }
 
 void movePlayer(float direction)
@@ -463,7 +432,7 @@ public void keyPressed()
     if (key == spaceKey && creative)
     {
         spacePressed = true;
-    }    
+    }
 }
 
 public void keyReleased()
@@ -505,7 +474,7 @@ public void keyReleased()
     if (key == spaceKey)
     {
       spacePressed = false;
-    }    
+    }
 }
 
 float getSpeedX(float playerAngle)
@@ -775,7 +744,7 @@ public float correctAngle(float xc, float zc){
     newAngle = (90+ newAngle) + 270;
   return newAngle;
 }
-
+ 
 public void updateCollision()
 {
   int arrayPlayerX = floor (x / blockSize);
@@ -831,7 +800,6 @@ public void updateCollision()
         }
     }
 }
- 
 /*Conclusions:
   Increasing ty rotates field of view down
     vice versa for reverse
