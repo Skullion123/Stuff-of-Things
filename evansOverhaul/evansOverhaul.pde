@@ -389,7 +389,8 @@ void updatePlayerPosition()
       }
       else
       {
-        gravity -= 4;
+        if (standing)
+          gravity -= 4;
       }
       println(gravity);
     }    
