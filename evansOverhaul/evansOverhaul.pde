@@ -337,6 +337,13 @@ boolean checkArrayEmpty(int arrayX, int arrayY, int arrayZ)
 void applyGravity()
 {
   if (!creative) {  
+    
+    if (!checkPosition(getPlayerX(), getPlayerY() - 10, getPlayerZ()))
+    {
+      incrementPlayerY(32);
+      gravity = 0;
+    }
+    
     if (checkPosition(getPlayerX(), getPlayerY() + standHeight + 10, getPlayerZ()))
     {
       standing = false;
