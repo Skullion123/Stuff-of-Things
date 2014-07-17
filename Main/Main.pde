@@ -61,6 +61,7 @@ void draw()
 
 public void GenerateEverything()
 {
+  pushMatrix();
   for (int x = 1; x <= 4; x++) //x
   {
     for (int z = 1; z <= 4; z++) //z
@@ -92,6 +93,7 @@ public void GenerateEverything()
       }
     }
   }
+  pushMatrix();
 }
 
 

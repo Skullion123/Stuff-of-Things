@@ -27,5 +27,7 @@ class Block {
      translate(Position.x, Position.y, Position.z);
       
     box(10);
+    
+    translate(-Position.x, -Position.y, -Position.z);
   }
 }
