@@ -314,11 +314,13 @@ void updatePlayerPosition()
     if (shiftPressed)
     {
       incrementPlayerY(5);
+      ty += 5;
     }
     
     if (spacePressed)
     {
       incrementPlayerY(-5);
+      ty -= 5;
     }    
     
     if ((wPressed) && (sPressed))
@@ -374,8 +376,8 @@ void updatePlayerPosition()
 
 void movePlayer(float xSpeed, float zSpeed)
 {
-    incrementPlayerX(xSpeed * 3);
-    incrementPlayerZ(zSpeed * 3);
+    incrementPlayerX(xSpeed * 4.75);
+    incrementPlayerZ(zSpeed * 4.75);
 }
 
 void movePlayer(float direction)
@@ -416,16 +418,19 @@ void setPlayerZ(float setZ)
 void incrementPlayerX(float setX)
 {
     setPlayerX(getPlayerX() + setX);
+    tx += setX;
 }
 
 void incrementPlayerY(float setY)
 {
     setPlayerY(getPlayerY() + setY);
+    ty += setY;
 }
 
 void incrementPlayerZ(float setZ)
 {
     setPlayerZ(getPlayerZ() + setZ);
+    tz += setZ;
 }
 
 public void keyPressed()
