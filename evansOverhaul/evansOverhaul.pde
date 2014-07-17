@@ -157,8 +157,6 @@ void draw()
    
     updatePlayerPosition();
     
-    updateCollision();
-    
     cameraUpdate();
    
     //Camera Mode 1 - Original
@@ -178,6 +176,11 @@ void draw()
     endCamera();
     }
     frameCounter++;
+}
+
+boolean checkPosition()
+{
+  return true;
 }
 
 //array stuff
@@ -418,13 +421,11 @@ void setPlayerZ(float setZ)
 void incrementPlayerX(float setX)
 {
     setPlayerX(getPlayerX() + setX);
-    tx += setX;
 }
 
 void incrementPlayerY(float setY)
 {
     setPlayerY(getPlayerY() + setY);
-    ty += setY;
 }
 
 void incrementPlayerZ(float setZ)
@@ -435,27 +436,27 @@ void incrementPlayerZ(float setZ)
 
 public void keyPressed()
 {
-    if (key == wKey)
+    if (key == wKey || key == 'W')
     {
         wPressed = true;
     }
     
-    if (key == sKey)
+    if (key == sKey || key == 'S')
     {
         sPressed = true;
     }
     
-    if (key == dKey)
+    if (key == dKey || key == 'D')
     {
         dPressed = true;
     }
     
-    if (key == aKey)
+    if (key == aKey || key == 'A')
     {
         aPressed = true;
     }
     
-    if (key == tKey)
+    if (key == tKey || key == 'T')
     {
         tPressed = true;
     }
@@ -473,27 +474,27 @@ public void keyPressed()
 
 public void keyReleased()
 {
-    if (key == wKey)
+    if (key == wKey || key == 'W')
     {
         wPressed = false;
     }
     
-    if (key == sKey)
+    if (key == sKey || key == 'S')
     {
         sPressed = false;
     }
     
-    if (key == dKey)
+    if (key == dKey || key == 'D')
     {
         dPressed = false;
     }
     
-    if (key == aKey)
+    if (key == aKey || key == 'A')
     {
         aPressed = false;
     }
     
-    if (key == tKey)
+    if (key == tKey || key == 'T')
     {
       tPressed = false;
       if (creative == false)
@@ -779,62 +780,6 @@ public float correctAngle(float xc, float zc){
   else if (xComp < 0 && zComp < 0)
     newAngle = (90+ newAngle) + 270;
   return newAngle;
-}
-
-public void updateCollision()
-{
-  int arrayPlayerX = floor (x / blockSize);
-  int arrayPlayerY = floor (y / blockSize);
-  int arrayPlayerZ = floor (z / blockSize);
-  
-    for (int arrayX = 0; arrayX < chunkArray[0].length; arrayX ++)
-    {
-        for (int arrayY = 0; arrayY < chunkArray[1].length; arrayY ++)
-        {
-            for (int arrayZ = 0; arrayZ < chunkArray[2].length; arrayZ ++)
-            {
-                if (chunkArray[arrayX][arrayY][arrayZ] != blockTypeAir)
-                {
-                    //&& abs(arrayX - arrayPlayerX  = 1) && abs(arrayY - arrayPlayerY = 1) && abs(arrayZ - arrayPlayerZ = 1)
-                    if (arrayY - arrayPlayerY == 1)
-                    {
-                      //turn jump off
-                    }
-                    else if (arrayY - arrayPlayerY == -1)
-                    {
-                      // turn gravity off
-                    }
-                    
-                    if (arrayZ - arrayPlayerZ == 1)
-                    {
-                      isNotBlockLeft = false;
-                      isNotBlockRight = true;
-                    }
-                    else if (arrayZ - arrayPlayerZ == -1)
-                    {
-                      isNotBlockLeft = true;
-                      isNotBlockRight = false;
-                    }
-                    else 
-                    {
-                      isNotBlockLeft = true;
-                      isNotBlockRight = true;
-                    }
-  
-                    /*if (arrayX - arrayPlayerX == 1)
-                      isNotBlockLeft = false;
-                    else if (arrayZ - arrayPlayerZ == -1)
-                      isNotBlockLeft = true;
-                    else 
-                      isBlockLeft = true; */ 
-                                      
-                    
-                    
-                    
-                }
-            }
-        }
-    }
 }
  
 /*Conclusions:
