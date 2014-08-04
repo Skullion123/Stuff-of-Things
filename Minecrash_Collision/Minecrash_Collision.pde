@@ -1,44 +1,3 @@
-/*=============================================//
-  Ryan Darge  3d Camera Movement
-   
-  Date      Log
-  ----      ---
-  09/20/10  Project Started
-  09/21/10  Added:
-              -LookMode 3
-              -Spotlight View Options
-              -XYZ Movement
-              -Jumping             
-  09/23/10  Added:
-              -LookMode 4
-              -MoveMode 2
-              -LookMode 5
-            Fixed:
-              -Small bug in arrow key movement (right would register as left)
-  09/25/10  Added:
-              -LookMode 6
-              -LookMode 7
-              -LookMode 8
-            Fixed:
-              -MoveMode 2
-  09/27/10  Added:
-              -SpotLightMode 4
-            Fixed:
-              -LookMode 8
-              
-  BUGLIST:
-    -All fixed?
-   
-  Notes:
-  I have to go through and add comments before
-  I actually upload this -.- 
-   
-  Bharath gave me this to look at:
-  loc.x+cos(relative+radians(90))*(senoffset)
-  loc.y+sin(relative+radians(90))*(senoffset)
-//=============================================*/
- 
- 
 //Global Variables
  
   //Environment Variables
@@ -75,10 +34,8 @@
     int cameraDistance = 1000;  //distance from camera to camera target in lookmode... 8?
    
 //Options
-    int lookMode = 8;
     int spotLightMode = 4;
     int cameraMode = 1;
-    int moveMode = 2;
     
 //init block ids
 int blockTypeAir = 0;
@@ -203,9 +160,9 @@ void adjustCamera()
 {
   float tempAngle = angle;
   beginCamera();
-  translate(-getSpeedX(tempAngle), 0, -getSpeedZ(tempAngle));
+  translate(-getSpeedX(tempAngle + 90), 0, -getSpeedZ(tempAngle + 90));
   endCamera();
-  //translate(getSpeedX(tempAngle), 0, getSpeedZ(tempAngle));
+  translate(getSpeedX(tempAngle + 90), 0, getSpeedZ(tempAngle + 90));
 }
 
 boolean checkLine(double angleT)
@@ -596,7 +553,7 @@ void movePlayer(float direction)
 }
 
 float getPlayerX()
-{
+{ 
     return x;
 }
 
@@ -770,180 +727,6 @@ void initCamera()
 
 public void cameraUpdate()
 {
-    //Drag-motion
-    if (lookMode == 1)
-    {
-        if(pmouseX > mouseX)
-            tx += dragMotionConstant;
-        else if (pmouseX < mouseX)
-            tx -= dragMotionConstant;
-        if(pmouseY > mouseY)
-            ty -= dragMotionConstant/1.5;
-        else if (pmouseY < mouseY)
-            ty += dragMotionConstant/1.5;
-  }
-   
-  //Push-motion
-  else if (lookMode == 2){
-      if (mouseX > (width/2+pushMotionConstant))
-          tx += dragMotionConstant;
-      else if (mouseX < (width/2-pushMotionConstant))
-          tx -= dragMotionConstant;
-      if (mouseY > (height/2+pushMotionConstant))
-          ty += dragMotionConstant;
-      else if (mouseY < (height/2-pushMotionConstant))
-          ty -= dragMotionConstant;
-  }
-   
-  //Push-motion V2 (Hopefully improved!)
-  else if (lookMode == 3)
-  {
-      int diffX = mouseX - width/2;
-      int diffY = mouseY - width/2;
-     
-      if (abs(diffX) > pushMotionConstant)
-          tx += diffX/25;
-      if (abs(diffY) > pushMotionConstant)
-          ty += diffY/25;
-  }
-   
-  //Push Motion V3 (For Camera-Mode 2)
-  else if (lookMode == 4)
-  {
-      int diffX = mouseX - width/2;
-      int diffY = mouseY - width/2;
-      //println(diffX);
-      if (abs(diffX) > pushMotionConstant)
-          rotX += diffX/100;
-      if (abs(diffY) > pushMotionConstant)
-          rotY += diffY/100;//diffY/100;
-  }
-   
-  //Push Motion V4.1 (Because it crashed and I lost V4.0 T.T
-  //Designed to work in cohesion with movement mode 2
-  else if (lookMode == 5)
-  {
-      int diffX = mouseX - width/2;
-      int diffY = mouseY - width/2;
-     
-      if(abs(diffX) > stillBox){
-          xComp = tx - x;
-          zComp = tz - z;
-          angle = degrees(atan(xComp/zComp));
-       
-          //---------DEBUG STUFF GOES HERE----------
-          /*println("tx:    " + tx);
-          println("tz:    " + tz);
-          println("xC:    " + xComp);
-          println("zC:    " + zComp);
-          println("Angle: " +angle);*/
-          //--------------------------------------*/
-       
-          if (angle < 45 && angle > -45 && zComp < 0)
-              tx += diffX/sensitivity;
-          else if (angle < 45 && angle > -45 && zComp > 0)
-              tx -= diffX/sensitivity;
-         
-          //Left Sector
-          else if (angle > 45 && angle < 90 && xComp < 0 && zComp < 0)
-              tz -= diffX/sensitivity;
-          else if (angle >-90 && angle <-45 && xComp < 0 && zComp > 0)
-              tz -= diffX/sensitivity;
-         
-          //Right Sector
-          else if (angle <-45 && angle >-90)
-              tz += diffX/sensitivity;
-          else if (angle < 90 && angle > 45 && xComp > 0 && zComp > 0)
-              tz += diffX/sensitivity;
-    }
-            
-    if (abs(diffY) > stillBox)
-      ty += diffY/(sensitivity/1.5);
-}
-   
-    //Lookmode 4.2
-  //Using a more proper unit circle.
-  else if (lookMode == 6){
-    int diffX = mouseX - width/2;
-    int diffY = mouseY - width/2;
-     
-    if(abs(diffX) > stillBox){
-      xComp = tx - x;
-      zComp = tz - z;
-      angle = correctAngle(xComp,zComp);
-         
-      //---------DEBUG STUFF GOES HERE----------
-      
-      /*println("tx:    " + tx);
-      println("tz:    " + tz);
-      println("xC:    " + xComp);
-      println("zC:    " + zComp);
-      println("Angle: " +angle);*/
-      //--------------------------------------*/
-       
-      //Looking 'forwards'
-      if ((angle >= 0 && angle < 45) || (angle > 315 && angle < 360))
-        tx += diffX/sensitivity;
-         
-      //Looking 'left'
-      else if (angle > 45 && angle < 135)
-        tz += diffX/sensitivity;
-         
-      //Looking 'back'
-      else if (angle > 135 && angle < 225)
-        tx -= diffX/sensitivity;
-         
-      //Looking 'right'
-      else if (angle > 225 && angle < 315)
-        tz -= diffX/sensitivity;
-        
-    }
-            
-    if (abs(diffY) > stillBox)
-      ty += diffY/(sensitivity/1.5);
-  }
-   
-  //Lookmode 7, trying to get rid of the slowdown in the corners with a sorta-buffer thing
-  else if (lookMode == 7){
-    int diffX = mouseX - width/2;
-    int diffY = mouseY - width/2;
-     
-    if(abs(diffX) > stillBox){
-      xComp = tx - x;
-      zComp = tz - z;
-      angle = correctAngle(xComp,zComp);
-         
-      //---------DEBUG STUFF GOES HERE----------
-      /*println("tx:    " + tx);
-      println("tz:    " + tz);
-      println("xC:    " + xComp);
-      println("zC:    " + zComp);
-      println("Angle: " +angle);*/
-      //--------------------------------------*/
- 
-      //Looking 'forwards'
-      if ((angle >= 0-camBuffer && angle < 45+camBuffer) || (angle > 315-camBuffer && angle < 360+camBuffer))
-        tx += diffX/sensitivity;
-         
-      //Looking 'left'
-      else if (angle > 45-camBuffer && angle < 135+camBuffer)
-        tz += diffX/sensitivity;
-         
-      //Looking 'back'
-      else if (angle > 135-camBuffer && angle < 225+camBuffer)
-        tx -= diffX/sensitivity;
-         
-      //Looking 'right'
-      else if (angle > 225-camBuffer && angle < 315+camBuffer)
-        tz -= diffX/sensitivity;
-        
-    }
-            
-    if (abs(diffY) > stillBox)
-      ty += diffY/(sensitivity/1.5);
-}
-   
-  else if (lookMode == 8){
     int diffX = mouseX - width/2;
     int diffY = mouseY - width/2;
      
@@ -979,7 +762,7 @@ public void cameraUpdate()
             
     if (abs(diffY) > stillBox)
       ty += diffY/(sensitivity/1.5);
-  }  
+    
 }
 public float correctAngle(float xc, float zc){
   float newAngle = -degrees(atan(xc/zc));
