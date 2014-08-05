@@ -232,7 +232,7 @@ boolean checkPosition(float xPos, float yPos, float zPos)
 {
 //  fill(255, 255, 255);
 //  drawCube((int)xPos, (int)yPos, (int)zPos, 35);
-  return (getArrayBlock(round(xPos / 32), round(yPos / 32), round(zPos / 32)) == blockTypeAir);
+  return (getArrayBlock(floor(xPos / 32), floor(yPos / 32), floor(zPos / 32)) == blockTypeAir);
 }
 
 void updateCollision(int xPos, int yPos, int zPos)
@@ -328,8 +328,8 @@ void populateArray()
     setArrayLayer(29, blockTypeStone);
     setArrayLayer(30, blockTypeObsidian);
     setArrayLayer(31, blockTypeBedrock);
-//    setArrayBlock(10, 15, 4, 1);
-    setArrayBlock(10, 13, 4, 1);
+    setArrayBlock(10, 15, 4, 1);
+//    setArrayBlock(10, 13, 4, 1);
 //    setArrayBlock(4, 15, 5, 1);
 //    setArrayBlock(5, 15, 4, 1);
 //    setArrayBlock(5, 15, 5, 1);
@@ -502,19 +502,19 @@ void updatePlayerPosition()
         aPressed = false;
     }
     
-    if ((wPressed) && (dPressed))
+    if ((wPressed) && (dPressed) && checkLine(angle + directionForwardRight))
     {
         movePlayer(directionForwardRight);
     }
-    else if ((wPressed) && (aPressed))
+    else if ((wPressed) && (aPressed) && checkLine(angle + directionForwardLeft))
     {
         movePlayer(directionForwardLeft);
     }
-    else if ((sPressed) && (dPressed))
+    else if ((sPressed) && (dPressed) && checkLine(angle + directionBackwardRight))
     {
         movePlayer(directionBackwardRight);
     }
-    else if ((sPressed) && (aPressed))
+    else if ((sPressed) && (aPressed) && checkLine(angle + directionBackwardLeft))
     {
         movePlayer(directionBackwardLeft);
     }
@@ -522,15 +522,15 @@ void updatePlayerPosition()
     {
         movePlayer(directionForward);
     }
-    else if (sPressed)
+    else if (sPressed && checkLine(angle + directionBackward))
     {
         movePlayer(directionBackward);
     }
-    else if (dPressed)
+    else if (dPressed && checkLine(angle + directionRight))
     {
         movePlayer(directionRight);
     }
-    else if (aPressed)
+    else if (aPressed && checkLine(angle + directionLeft))
     {
         movePlayer(directionLeft);
     }
