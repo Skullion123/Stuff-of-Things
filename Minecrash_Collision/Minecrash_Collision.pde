@@ -1,7 +1,6 @@
 //Global Variables
  
-  //Environment Variables
-    //How am make arrysss?!
+//Environment Variables
    boolean isNotBlockLeft;
    boolean isNotBlockRight;
    
@@ -12,7 +11,7 @@
    
    boolean standing = false;
    
-  //Camera Variables
+//Camera Variables
     float x, y, z;
     float tx, ty, tz;
     float rotX, rotY; 
@@ -32,54 +31,50 @@
     int stillBox = 100;        //Center of POV, mouse must be stillBox away from center to move
     float camBuffer = 10;
     int cameraDistance = 1000;  //distance from camera to camera target in lookmode... 8?
-   
-//Options
-    int spotLightMode = 4;
-    int cameraMode = 1;
     
 //init block ids
-int blockTypeAir = 0;
-int blockTypeDirt = 1;
-int blockTypeStone = 2;
-int blockTypeObsidian = 3;
-int blockTypeGrass = 4;
-int blockTypeBedrock = 5;
-int blockTypeWood = 6;
-int blockTypeLeaves = 7;
+    int blockTypeAir = 0;
+    int blockTypeDirt = 1;
+    int blockTypeStone = 2;
+    int blockTypeObsidian = 3;
+    int blockTypeGrass = 4;
+    int blockTypeBedrock = 5;
+    int blockTypeWood = 6;
+    int blockTypeLeaves = 7;
 
 //array
-int[][][] chunkArray;
+    int[][][] chunkArray;
 
 //block varaibles
-int blockSize = 32;
-int blockSolidSize = 29;
+    int blockSize = 32;
+    int blockSolidSize = 29;
 
 //immutables
-char wKey = 'w';
-char sKey = 's';
-char dKey = 'd';
-char aKey = 'a';
-char tKey = 't';
-char spaceKey = ' ';
+    char wKey = 'w';
+    char sKey = 's';
+    char dKey = 'd';
+    char aKey = 'a';
+    char tKey = 't';
+    char spaceKey = ' ';
 
 //directions
-int directionForward = 0;
-int directionBackward = 180;
-int directionRight = 90;
-int directionLeft = 270;
-int directionForwardRight = 45;
-int directionForwardLeft = 315;
-int directionBackwardRight = 135;
-int directionBackwardLeft = 225;
+    int directionForward = 0;
+    int directionBackward = 180;
+    int directionRight = 90;
+    int directionLeft = 270;
+    int directionForwardRight = 45;
+    int directionForwardLeft = 315;
+    int directionBackwardRight = 135;
+    int directionBackwardLeft = 225;
 
 //key press variables
-boolean wPressed = false;
-boolean sPressed = false;
-boolean dPressed = false;
-boolean aPressed = false;
-boolean tPressed = false;
-boolean shiftPressed = false;
-boolean spacePressed = false;
+    boolean wPressed = false;
+    boolean sPressed = false;
+    boolean dPressed = false;
+    boolean aPressed = false;
+    boolean tPressed = false;
+    boolean shiftPressed = false;
+    boolean spacePressed = false;
 
 void setup()
 {
@@ -99,8 +94,6 @@ void setup()
     populateArray();
     
     drawArray();
-    
-   
 }
  
  
@@ -108,17 +101,7 @@ void draw()
 {
     //update frame
     background(135, 206, 250);
-   
-    if(spotLightMode == 0)
-      lights();
-    else if(spotLightMode == 1)
-      spotLight(255, 255, 255, x, y - standHeight, z, tx, ty, tz, PI, 1);
-    else if(spotLightMode == 2)
-      spotLight(255, 255, 255, x, y - standHeight - 200, z, x + 100, y + 100, z, frameCounter / 10, 1);
-    else if(spotLightMode == 3)
-      spotLight(255, 255, 255, width / 2, height / 2 - 1000, 0, width / 2, height / 2, 0, PI, 1);
-    else if(spotLightMode == 4)
-      pointLight(255, 255, 255, x, y, z);
+    pointLight(255, 255, 255, x, y, z);
     
     drawArray();
    
@@ -127,30 +110,9 @@ void draw()
     applyGravity();
     
     cameraUpdate();
-    
-    /*fill(255, 255, 255);
-    translate(getPlayerX(), getPlayerY() , getPlayerZ());
-    box( 100 , 100, 60);
-    translate(-getPlayerX(), -getPlayerY() , -getPlayerZ());*/
 
-    
-   
-    //Camera Mode 1 - Original
-    if(cameraMode == 1)
     camera(x, y, z, tx, ty, tz, 0, 1, 0);
-   
-    //Camera Mode 2 - Matrix'd
-    if(cameraMode == 2){
-    beginCamera();
-    camera();
-    translate(x,y,z);
-    translate(0, 2 * -standHeight, 0);
- 
-    rotateX(rotY / 100.0); //This seems to work o.o
-    rotateY(-rotX / 100.0);
-    //rotateX(rotX/100.0);
-    endCamera();
-    }
+
     frameCounter++;
     
     adjustCamera();
@@ -193,14 +155,6 @@ boolean checkLine(double angleT)
   diffX = slope;
   diffZ = 1;
   }
-
-
-//  diffX = slope;
-//  diffZ = 1;
-//  if(getSpeedX((float)angleT) < 0)
-//    diffX *= -1;
-//  if(getSpeedZ((float)angleT) < 0)
-//    diffZ *= -1;
   
   if(getSpeedX((float)angleT + 90) == 0)
     diffX = 0;
@@ -328,11 +282,33 @@ void populateArray()
     setArrayLayer(29, blockTypeStone);
     setArrayLayer(30, blockTypeObsidian);
     setArrayLayer(31, blockTypeBedrock);
-    setArrayBlock(10, 15, 4, 1);
-//    setArrayBlock(10, 13, 4, 1);
-//    setArrayBlock(4, 15, 5, 1);
-//    setArrayBlock(5, 15, 4, 1);
-//    setArrayBlock(5, 15, 5, 1);
+    //A tree
+    setArrayBlock(10, 15, 4, 6);
+    setArrayBlock(10, 14, 4, 6);
+    setArrayBlock(10, 13, 4, 6);
+    setArrayBlock(10, 12, 4, 6);
+    setArrayBlock(10, 11, 4, 6);
+    setArrayBlock(10, 10, 4, 6);
+    setArrayBlock(10, 10, 5, 6);
+    setArrayBlock(9, 10, 4, 7);
+    setArrayBlock(8, 10, 4, 7);
+    setArrayBlock(11, 10, 4, 7);
+    setArrayBlock(12, 10, 4, 7);
+    setArrayBlock(10, 10, 3, 7);
+    setArrayBlock(10, 10, 2, 7);
+    setArrayBlock(10, 10, 5, 7);
+    setArrayBlock(10, 10, 6, 7);
+    setArrayBlock(9, 10, 3, 7);
+    setArrayBlock(9, 10, 5, 7);
+    setArrayBlock(11, 10, 3, 7);
+    setArrayBlock(11, 10, 5, 7);
+    setArrayBlock(10, 9, 4, 7);
+    setArrayBlock(9, 9, 4, 7);
+    setArrayBlock(11, 9, 4, 7);
+    setArrayBlock(10, 9, 3, 7);
+    setArrayBlock(10, 9, 5, 7);
+    setArrayBlock(10, 8, 4, 7);
+    
 }
 
 void setArrayLayer(int layerY, int blockType)
@@ -746,18 +722,7 @@ public void cameraUpdate()
       float newZComp = cameraDistance * cos(radians(angle));
        
       tx = newXComp + x;
-      tz = -newZComp + z;
-     
-      //---------DEBUG STUFF GOES HERE----------
-      /*println("tx:    " + tx);
-      println("tz:    " + tz);
-      println("xC:    " + xComp);
-      println("NewXC: " + newXComp);
-      println("zC:    " + zComp);
-      println("NewZC: " + newZComp);
-      println("Angle: " +angle);*/
-      //--------------------------------------*/
-        
+      tz = -newZComp + z;  
     }
             
     if (abs(diffY) > stillBox)
@@ -774,11 +739,3 @@ public float correctAngle(float xc, float zc){
     newAngle = (90+ newAngle) + 270;
   return newAngle;
 }
- 
-/*Conclusions:
-  Increasing ty rotates field of view down
-    vice versa for reverse
-     
-  Increasing tX rotates field of view right
-    vice versa for reverse
-*/
