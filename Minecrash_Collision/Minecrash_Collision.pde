@@ -115,16 +115,23 @@ void draw()
 
     frameCounter++;
     
-    adjustCamera();
+//    adjustCamera();
 }
 
-void adjustCamera()
+//void adjustCamera()
+//{
+//  float tempAngle = angle;
+//  beginCamera();
+//  translate(-getSpeedX(tempAngle + 90), 0, -getSpeedZ(tempAngle + 90));
+//  endCamera();
+//  translate(getSpeedX(tempAngle + 90), 0, getSpeedZ(tempAngle + 90));
+//}
+
+boolean checkNext(float nextX, float nextZ, float direction)
 {
-  float tempAngle = angle;
-  beginCamera();
-  translate(-getSpeedX(tempAngle + 90), 0, -getSpeedZ(tempAngle + 90));
-  endCamera();
-  translate(getSpeedX(tempAngle + 90), 0, getSpeedZ(tempAngle + 90));
+  println(checkPosition(nextX, getPlayerY(), nextZ));
+  boolean returnBool = (checkPosition(nextX, getPlayerY() + standHeight, nextZ) || checkPosition(nextX, getPlayerY() + standHeight - 32, nextZ) || checkPosition(nextX, getPlayerY() + standHeight, nextZ));
+  return returnBool;
 }
 
 boolean checkLine(double angleT)
@@ -186,7 +193,7 @@ boolean checkPosition(float xPos, float yPos, float zPos)
 {
 //  fill(255, 255, 255);
 //  drawCube((int)xPos, (int)yPos, (int)zPos, 35);
-  return (getArrayBlock(floor(xPos / 32), floor(yPos / 32), floor(zPos / 32)) == blockTypeAir);
+  return (getArrayBlock(round(xPos / 32), round(yPos / 32), round(zPos / 32)) == blockTypeAir);
 }
 
 void updateCollision(int xPos, int yPos, int zPos)
@@ -478,35 +485,35 @@ void updatePlayerPosition()
         aPressed = false;
     }
     
-    if ((wPressed) && (dPressed) && checkLine(angle + directionForwardRight))
+    if ((wPressed) && (dPressed))
     {
         movePlayer(directionForwardRight);
     }
-    else if ((wPressed) && (aPressed) && checkLine(angle + directionForwardLeft))
+    else if ((wPressed) && (aPressed))
     {
         movePlayer(directionForwardLeft);
     }
-    else if ((sPressed) && (dPressed) && checkLine(angle + directionBackwardRight))
+    else if ((sPressed) && (dPressed))
     {
         movePlayer(directionBackwardRight);
     }
-    else if ((sPressed) && (aPressed) && checkLine(angle + directionBackwardLeft))
+    else if ((sPressed) && (aPressed))
     {
         movePlayer(directionBackwardLeft);
     }
-    else if (wPressed && checkLine(angle))
+    else if (wPressed)
     {
         movePlayer(directionForward);
     }
-    else if (sPressed && checkLine(angle + directionBackward))
+    else if (sPressed)
     {
         movePlayer(directionBackward);
     }
-    else if (dPressed && checkLine(angle + directionRight))
+    else if (dPressed)
     {
         movePlayer(directionRight);
     }
-    else if (aPressed && checkLine(angle + directionLeft))
+    else if (aPressed)
     {
         movePlayer(directionLeft);
     }
@@ -517,15 +524,18 @@ void updatePlayerPosition()
     aPressed = realAPressed;
 }
 
-void movePlayer(float xSpeed, float zSpeed)
+void movePlayer(float xSpeed, float zSpeed, float direction)
 {
+  if (checkNext((xSpeed * 4.75) + getPlayerX(), (zSpeed * 4.75) + getPlayerZ(), direction))
+  {
     incrementPlayerX(xSpeed * 4.75);
     incrementPlayerZ(zSpeed * 4.75);
+  }
 }
 
 void movePlayer(float direction)
 {
-    movePlayer(getSpeedX(direction), getSpeedZ(direction));
+    movePlayer(getSpeedX(direction), getSpeedZ(direction), direction);
 }
 
 float getPlayerX()

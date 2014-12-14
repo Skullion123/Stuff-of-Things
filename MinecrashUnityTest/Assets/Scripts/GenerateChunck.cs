@@ -15,18 +15,21 @@ public class GenerateChunck : MonoBehaviour {
 	public const int BLOCKTYPEGRASS = 4;
 	public const int BLOCKTYPEBEDROCK = 5;
 	public const int BLOCKTYPEWOOD = 6;
-	public const int BLOCKTYPELEAVES = 7;
+	public const int BLOCKTYPELEAVES = 7; 
 
 
 
 	//variables and arrays
 	int[,,] chunkArray;
+	int cubeCount;
 
 	void Start () {
+		cubeCount = 0;
 		initArray ();
 		clearArray ();
 		populateArray ();
 		drawArray ();
+		print (cubeCount);
 	}
 
 	private void initArray()
@@ -114,7 +117,9 @@ public class GenerateChunck : MonoBehaviour {
 						//getFill(chunkArray[arrayX][arrayY][arrayZ]);
 						//updateCollision(arrayX, arrayY, arrayZ);
 						if (checkSurroundings(arrayX, arrayY, arrayZ))
+						{
 							drawCubeWithColor(arrayX * BLOCKSIZE, arrayY * BLOCKSIZE, arrayZ * BLOCKSIZE, BLOCKSOLIDSIZE, getFill(chunkArray[arrayX, arrayY, arrayZ]));
+						}
 					}
 				}
 			}
@@ -135,6 +140,7 @@ public class GenerateChunck : MonoBehaviour {
 			return false;
 	}
 
+
 	private bool checkArrayEmpty(int arrayX, int arrayY, int arrayZ)
 	{
 		return (getArrayBlock(arrayX, arrayY, arrayZ) == 0);
@@ -147,6 +153,7 @@ public class GenerateChunck : MonoBehaviour {
 		cube.transform.position = new Vector3(xPosition, yPosition, zPosition);
 		cube.transform.localScale = new Vector3(blockSize, blockSize, blockSize);
 		cube.renderer.material.color = color;
+		cubeCount++;
 	}
 
 	private Color getFill(int blockType)
