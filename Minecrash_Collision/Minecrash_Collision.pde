@@ -129,7 +129,7 @@ void draw()
 
 boolean checkNext(float nextX, float nextZ, float direction)
 {
-  println(checkPosition(nextX, getPlayerY(), nextZ));
+  //println(checkPosition(nextX, getPlayerY(), nextZ));
   boolean returnBool = (checkPosition(nextX, getPlayerY() + standHeight, nextZ) || checkPosition(nextX, getPlayerY() + standHeight - 32, nextZ) || checkPosition(nextX, getPlayerY() + standHeight, nextZ));
   return returnBool;
 }
@@ -526,7 +526,7 @@ void updatePlayerPosition()
 
 void movePlayer(float xSpeed, float zSpeed, float direction)
 {
-  if (checkNext((xSpeed * 4.75) + getPlayerX(), (zSpeed * 4.75) + getPlayerZ(), direction))
+  if (checkNext((xSpeed * 75) + getPlayerX(), (zSpeed * 75) + getPlayerZ(), direction))
   {
     incrementPlayerX(xSpeed * 4.75);
     incrementPlayerZ(zSpeed * 4.75);
