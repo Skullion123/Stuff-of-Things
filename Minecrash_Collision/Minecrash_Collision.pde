@@ -129,8 +129,19 @@ void draw()
 
 boolean checkNext(float nextX, float nextZ, float direction)
 {
+  boolean returnBool = true;
   //println(checkPosition(nextX, getPlayerY(), nextZ));
-  boolean returnBool = (checkPosition(nextX, getPlayerY() + standHeight, nextZ) || checkPosition(nextX, getPlayerY() + standHeight - 32, nextZ) || checkPosition(nextX, getPlayerY() + standHeight, nextZ));
+  float invertSlope = -1 / ((nextZ - getPlayerZ())/(nextX - getPlayerX()));
+  float x1 = nextX + (16 * (1 / sqrt(1 + (invertSlope * invertSlope))));
+  float x2 = nextX - (16 * (1 / sqrt(1 + (invertSlope * invertSlope))));
+  float z1 = nextZ + (16 * (invertSlope / sqrt(1 + (invertSlope * invertSlope))));
+  float z2 = nextZ - (16 * (invertSlope / sqrt(1 + (invertSlope * invertSlope))));
+  //println(sqrt(((nextX - x1) * (nextX - x1)) + ((nextZ - z1) * (nextZ - z1))));
+  returnBool = (checkPosition(x1, getPlayerY() + standHeight, z1) && checkPosition(x1, getPlayerY() + standHeight - 32, z1) && checkPosition(x1, getPlayerY() + standHeight, z1));
+  if (returnBool)
+    returnBool = (checkPosition(x2, getPlayerY() + standHeight, z2) && checkPosition(x2, getPlayerY() + standHeight - 32, z2) && checkPosition(x2, getPlayerY() + standHeight, z2));
+  if (returnBool)
+    returnBool = (checkPosition(nextX, getPlayerY() + standHeight, nextZ) && checkPosition(nextX, getPlayerY() + standHeight - 32, nextZ) && checkPosition(nextX, getPlayerY() + standHeight, nextZ));
   return returnBool;
 }
 
